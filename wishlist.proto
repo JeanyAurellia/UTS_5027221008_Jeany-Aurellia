@@ -1,0 +1,35 @@
+syntax = "proto3";
+package wishlist;
+
+service Wishlist {
+    rpc AddFilm(AddFilmRequest) returns (Film) {}
+    rpc GetFilmByTitle(GetFilmByTitleRequest) returns (Film) {} // Ganti GetFilmById dengan GetFilmByTitle
+    rpc GetAllFilms(Empty) returns (stream Film) {}
+    rpc UpdateFilm(UpdateFilmRequest) returns (Film) {}
+    rpc DeleteFilmByTitle(DeleteFilmByTitleRequest) returns (Empty) {} // Ganti DeleteFilmById dengan DeleteFilmByTitle
+}
+
+message Film {
+  int32 id = 1;
+  string title = 2;
+  string director = 3;
+  int32 year = 4; // Ubah tipe data dari string menjadi int32
+}
+
+message Empty {}
+
+message AddFilmRequest {
+    Film film = 1;
+}
+
+message UpdateFilmRequest {
+    Film film = 1;
+}
+
+message GetFilmByTitleRequest { // Tambah pesan baru untuk permintaan pencarian berdasarkan judul
+    string title = 1;
+}
+
+message DeleteFilmByTitleRequest { // Tambah pesan baru untuk permintaan penghapusan berdasarkan judul
+    string title = 1;
+}
