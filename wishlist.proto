@@ -4,7 +4,7 @@ package wishlist;
 service Wishlist {
     rpc AddFilm(AddFilmRequest) returns (Film) {}
     rpc GetFilmByTitle(GetFilmByTitleRequest) returns (Film) {} // Ganti GetFilmById dengan GetFilmByTitle
-    rpc GetAllFilms(Empty) returns (stream Film) {}
+    rpc GetAllFilms(GetAllFilmsRequest) returns (stream Film);
     rpc UpdateFilm(UpdateFilmRequest) returns (Film) {}
     rpc DeleteFilmByTitle(DeleteFilmByTitleRequest) returns (Empty) {} // Ganti DeleteFilmById dengan DeleteFilmByTitle
 }
@@ -17,6 +17,8 @@ message Film {
 }
 
 message Empty {}
+
+message GetAllFilmsRequest {}
 
 message AddFilmRequest {
     Film film = 1;
