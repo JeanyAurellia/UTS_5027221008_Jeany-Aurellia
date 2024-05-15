@@ -40,6 +40,16 @@ class WishlistClient:
         except grpc.RpcError as e:
             messagebox.showerror("Error", f"Failed to delete film: {e.details()}")
 
+    def get_all_films(self):
+        try:
+            films = []
+            for film in self.stub.GetAllFilms(wishlist_pb2.GetAllFilmsRequest()):
+                films.append(film)
+            return films
+        except grpc.RpcError as e:
+            messagebox.showerror("Error", f"Failed to get all films: {e.details()}")
+            return []
+
 def show_add_page():
     add_page = tk.Toplevel(root)
     add_page.title("Add Film")
@@ -154,6 +164,20 @@ def show_delete_page():
     delete_button = tk.Button(delete_page, text="Delete Film", command=lambda: client.delete_film_by_title(delete_entry.get()))
     delete_button.pack(pady=5)
 
+def show_all_films_page():
+    all_films_page = tk.Toplevel(root)
+    all_films_page.title("All Films")
+
+    films = client.get_all_films()
+
+    if films:
+        for film in films:
+            film_label = tk.Label(all_films_page, text=f"ID: {film.id}, Title: {film.title}, Director: {film.director}, Year: {film.year}")
+            film_label.pack(pady=2)
+    else:
+        no_film_label = tk.Label(all_films_page, text="No films available.")
+        no_film_label.pack(pady=5)
+
 add_button = tk.Button(root, text="Add Film", command=show_add_page)
 add_button.pack(pady=5)
 
@@ -165,5 +189,8 @@ update_button.pack(pady=5)
 
 delete_button = tk.Button(root, text="Delete Film", command=show_delete_page)
 delete_button.pack(pady=5)
+
+all_films_button = tk.Button(root, text="All Films", command=show_all_films_page)
+all_films_button.pack(pady=5)
 
 root.mainloop()
